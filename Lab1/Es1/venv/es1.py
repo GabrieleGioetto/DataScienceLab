@@ -35,4 +35,4 @@ with open("iris.csv") as f:
     for specie in flowers.keys():
         flowersDeviations[specie] = [math.sqrt(x / counterFlowers[str(specie)]) for x in flowers[str(specie)]]
 
-    print(f"Deviations for species {flowersDeviations}")
+    print(f"Standard deviations for species {flowersDeviations}")
