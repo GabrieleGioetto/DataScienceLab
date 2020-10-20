@@ -23,7 +23,7 @@ with open("aclimdb_reviews_train.csv") as f:
     data = data[1:]
     # print(data[:10])
 
-    reviews = list(map(lambda d: d[0], data))
+    reviews = [d[0] for d in data]
     reviewsTokenized = tokenize(reviews)
 
     listWordsCount = []  # DF for every document

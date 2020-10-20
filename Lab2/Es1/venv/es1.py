@@ -19,8 +19,6 @@ def getTopColdestMeasurements(data, City, N):
 
 with open("GLT_filtered.csv") as f:
     data = list(csv.reader(f))
-    print(data[0])
-    print(data[1])
     data = data[1:]
 
     precedentValue = 0
@@ -41,3 +39,4 @@ with open("GLT_filtered.csv") as f:
         precedentValue = float(data[i][1])
 
     print(getTopHottestMeasurements(data, "Abidjan", 10))
+    print(getTopColdestMeasurements(data, "Abidjan", 10))
