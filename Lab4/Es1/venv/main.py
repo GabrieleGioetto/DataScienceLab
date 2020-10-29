@@ -17,10 +17,7 @@ y_test = dfSampled.iloc[:, 4].to_numpy().copy()
 X_train = df.loc[df.index.difference(dfSampled.index)].iloc[:, 0: 4].to_numpy().copy()  # Remaining 80% values
 y_train = df.loc[df.index.difference(dfSampled.index)].iloc[:, 4].to_numpy().copy()  # Remaining 80% values
 
-# print(X_train)
-# print(y_train)
-
-knn = KNearestNeighbors(10)
+knn = KNearestNeighbors(k=5)
 knn.fit(X_train, y_train)
 y_pred = (knn.predict(X_test))
 
