@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 with open("831394006_T_ONTIME.csv") as f:
     data = pd.read_csv(f, parse_dates=["FL_DATE"])
@@ -50,3 +51,19 @@ with open("831394006_T_ONTIME.csv") as f:
     # 10
     dataFirstWeek = dataGrouped[pd.Int64Index(dataGrouped.index.get_level_values("FL_DATE").isocalendar().week) == 1]
     print(f'MEDIA:  {dataFirstWeek.loc[:, :, "LAX", :]["ARR_DELAY"].mean()}')
+    print("--------------------------------------------")
+
+    # 11
+    pivot_table = (data.pivot_table("FL_DATE", index="weekday", columns="UNIQUE_CARRIER", aggfunc="count"))
+    print(pivot_table)
+    pairwise_corr = pivot_table.corr()
+    sns.heatmap(pairwise_corr, xticklabels=pairwise_corr.columns, yticklabels=pairwise_corr.columns)
+
+    plt.show()
+
+    # 12
+    pivot_table = data.pivot_table("ARR_DELAY", index="weekday", columns="UNIQUE_CARRIER", aggfunc="mean")
+    pairwise_corr = pivot_table.corr()
+    sns.heatmap(pairwise_corr, xticklabels=pairwise_corr.columns, yticklabels=pairwise_corr.columns)
+
+    plt.show()
