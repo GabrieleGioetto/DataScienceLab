@@ -4,3 +4,5 @@ lib/
 lib64/
 venv/
 .idea/
+Lab6/Es3/mnist_test.csv
+Lab6/Es3/mnist_train.csv
