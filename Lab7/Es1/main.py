@@ -24,8 +24,13 @@ eval_file_path = "./free-spoken-digit/eval"
 file_dev = listdir(dev_file_path)
 file_eval = listdir(eval_file_path)
 
-fourier_transformation_train = pd.DataFrame(data=np.zeros(shape=(1500, 4001)), columns=list(range(4001)))
-fourier_transformation_test = pd.DataFrame(data=np.zeros(shape=(500, 4001)), columns=list(range(4001)))
+# fr = [[[[[[0, 0]]] * 4001]] * 1500]
+# print(fr)
+
+# fourier_transformation_train = pd.DataFrame(data=np.nan(shape=(1500, 4001)), columns=list(range(4001)))
+fourier_transformation_train = np.array([[[[[[0.0, 0.0]]] * 4001]] * 1500])
+# fourier_transformation_test = pd.DataFrame(data=np.nan(shape=(500, 4001)), columns=list(range(4001)))
+fourier_transformation_test = np.array([[[[[[0.0, 0.0]]] * 4001]] * 500])
 
 max_samples = 0
 
@@ -46,12 +51,12 @@ for i, file_name in enumerate(file_dev):
 
     ft = fft(data)
     amplitudes_f = 2 / N * np.abs(ft[0:N // 2])
-    # print(f"len ft: {len(ft)}")
-    # print(f"len amp: {len(amplitudes_f)}")
+    phase_f = np.arctan2(np.imag(ft[0:N // 2]), np.real(ft[0:N // 2]))
+
     frequences = np.linspace(0, f_b, N // 2)  # frequenze in Hz in cui ho calcolato i moduli
-    # ft_df = pd.DataFrame(data=[amplitudes_f], columns=frequences)
-    for j in range(len(frequences) - 1):
-        fourier_transformation_train.iloc[i, round(frequences[j])] += amplitudes_f[j]
+    length_frequences = len(frequences) - 1
+    for j in range(length_frequences):
+        fourier_transformation_train[:, i, round(frequences[j])] += [[amplitudes_f[j], phase_f[j]]]
     print(i)
 
 print(f"MAX SAMPLES: {max_samples}")
@@ -65,21 +70,19 @@ for i, file_name in enumerate(file_eval):
 
     ft = fft(data)
     amplitudes_f = 2 / N * np.abs(ft[0:N // 2])
-    # print(f"len ft: {len(ft)}")
-    # print(f"len amp: {len(amplitudes_f)}")
+    phase_f = np.arctan2(np.imag(ft[0:N // 2]), np.real(ft[0:N // 2]))
+
     frequences = np.linspace(0, f_b, N // 2)  # frequenze in Hz in cui ho calcolato i moduli
-    # ft_df = pd.DataFrame(data=[amplitudes_f], columns=frequences)
-    for j in range(len(frequences)):
-        # print(frequences[j])
-        # print(round(frequences[j]))
-        fourier_transformation_test.iloc[i, round(frequences[j])] += amplitudes_f[j]
+    length_frequences = len(frequences)
+    for j in range(length_frequences):
+        fourier_transformation_train[:, i, round(frequences[j])] += [[amplitudes_f[j], phase_f[j]]]
     print(i)
 
 print(len(fourier_transformation_train))
 
 y_train = [file[-5] for file in file_dev]
 
-clf = RandomForestClassifier(random_state=0)
+clf = KNeighborsClassifier(n_neighbors=8)
 clf.fit(fourier_transformation_train, y_train)
 
 y_pred = clf.predict(fourier_transformation_test)
