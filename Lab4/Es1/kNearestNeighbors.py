@@ -52,11 +52,15 @@ class KNearestNeighbors:
         return 0
 
     def _euclideanDistance(self, p, q):
-        somma = sum([(x - y) ** 2 for x, y in zip(p, q)])
-        return math.sqrt(somma)
+        # somma = sum([(x - y) ** 2 for x, y in zip(p, q)])
+        # return math.sqrt(somma)
+
+        # numpy version
+        return ((p - q) ** 2).sum() ** 0.5
 
     def _cosineDistance(self, p, q):
-        somma = sum([x * y for x, y in zip(p, q)]) / (sum([x ** 2 for x in p]) * sum([y ** 2 for y in q]))
+        somma = sum([x * y for x, y in zip(p, q)]) / \
+                (sum([x ** 2 for x in p]) * sum([y ** 2 for y in q]))
         return 1 - abs(somma)
 
     def _manhattanDistance(self, p, q):
