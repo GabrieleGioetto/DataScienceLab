@@ -28,9 +28,9 @@ file_eval = listdir(eval_file_path)
 # print(fr)
 
 # fourier_transformation_train = pd.DataFrame(data=np.nan(shape=(1500, 4001)), columns=list(range(4001)))
-fourier_transformation_train = np.array([[[[[[0.0, 0.0]]] * 4001]] * 1500])
+fourier_transformation_train = np.array([[[0.0, 0.0]] * 4001] * 1500)
 # fourier_transformation_test = pd.DataFrame(data=np.nan(shape=(500, 4001)), columns=list(range(4001)))
-fourier_transformation_test = np.array([[[[[[0.0, 0.0]]] * 4001]] * 500])
+fourier_transformation_test = np.array([[[0.0, 0.0]] * 4001] * 500)
 
 max_samples = 0
 
@@ -56,7 +56,7 @@ for i, file_name in enumerate(file_dev):
     frequences = np.linspace(0, f_b, N // 2)  # frequenze in Hz in cui ho calcolato i moduli
     length_frequences = len(frequences) - 1
     for j in range(length_frequences):
-        fourier_transformation_train[:, i, round(frequences[j])] += [[amplitudes_f[j], phase_f[j]]]
+        fourier_transformation_train[i, round(frequences[j]), :] += [amplitudes_f[j], phase_f[j]]
     print(i)
 
 print(f"MAX SAMPLES: {max_samples}")
@@ -75,7 +75,7 @@ for i, file_name in enumerate(file_eval):
     frequences = np.linspace(0, f_b, N // 2)  # frequenze in Hz in cui ho calcolato i moduli
     length_frequences = len(frequences)
     for j in range(length_frequences):
-        fourier_transformation_train[:, i, round(frequences[j])] += [[amplitudes_f[j], phase_f[j]]]
+        fourier_transformation_train[i, round(frequences[j]), :] += [amplitudes_f[j], phase_f[j]]
     print(i)
 
 print(len(fourier_transformation_train))
