@@ -1,5 +1,5 @@
 # DataScienceLab
-Esercizi data science
 
+Exercises data science
 
-Repository con tutti gli esercizi del corso Data Science Lab ( PoliTO ) svolti da Gabriele Gioetto
+Repository with all the labs' exercises of the course Data Science Lab ( PoliTO )
